@@ -12,7 +12,8 @@ const App = () => {
   
   const handleVotes = () =>{
     const updatedVotes = [...votes]
-    return(updatedVotes[selected] +=1) 
+    updatedVotes[selected] += 1
+    setVotes(updatedVotes) 
   }
 
   const anecdotes = [
@@ -24,9 +25,7 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
   ]   
   const [selected, setSelected] = useState(0)
-  // const votes = new Array(anecdotes.length).fill(0)
-  // const setVotes = useState(0)
-  const votes = new Array(anecdotes.length).fill(0)
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
 
   return (
     <div>
