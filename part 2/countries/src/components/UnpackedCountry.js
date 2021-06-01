@@ -1,6 +1,4 @@
-import React from 'react'
-
-const UnpackCountry = ({filteredCountry}) =>{
+const UnpackedCountry = ({filteredCountry}) =>{
   return(
     <div>
       <h2>{filteredCountry.name}</h2>
@@ -11,9 +9,7 @@ const UnpackCountry = ({filteredCountry}) =>{
         {filteredCountry.languages.map(language => <li key={language.name}>{language.name}</li>)}
       </ul>
       <img src={filteredCountry.flag} alt=""></img>
-      
     </div>
   )
 }
-
-export default UnpackCountry
+export default UnpackedCountry

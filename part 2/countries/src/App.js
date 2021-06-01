@@ -1,38 +1,38 @@
-import React, {useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import axios from 'axios'
-import DisplayCountries from'./components/DisplayCountries'
+import DisplayCountries from './components/DisplayCountries'
 
-const App = () =>{
-
+const App = () => {
   const [list, setList] = useState([])
+
+  const [loading, setLoading] = useState(false)
+
+  useEffect(()=>{
+    setLoading(true)
+    axios.get('https://restcountries.eu/rest/v2/all/')
+    .then(response => setList(response.data))
+    setLoading(false)
+  },[])
 
   const [filter, setFilter] = useState('')
   const handleFilter = (event) =>{
     setFilter(event.target.value)
   }
+  const handleShow = (name) =>{
+    setFilter(name)
+  }
 
-  const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(()=>{
-    setIsLoading(true)
-    axios.get('https://restcountries.eu/rest/v2/all/')
-    .then(response =>{
-      setList(response.data)
-    })
-    setIsLoading(false)
-  },[])
-
-  return(
+  return (
     <div>
       <form>
         <input
-        value={filter}
-        onChange={handleFilter}
+        value = {filter}
+        onChange = {handleFilter}
         />
       </form>
-      <DisplayCountries countries={list} filter={filter} loading={isLoading}/>
+      <DisplayCountries loading={loading} list={list} filter={filter} handleShow={handleShow}/>
     </div>
   )
 }
 
-export default App;
+export default App

@@ -1,28 +1,28 @@
-import React from 'react'
 import Country from './Country'
-import UnpackCountry from './UnpackCountry'
-
-const DisplayCountires = ({countries, filter, loading}) =>{
-  //prevents issues with empty data passing to the filter
-  if(loading) return(<div>Loading...</div>)
+import UnpackedCountry from './UnpackedCountry'
+const DisplayCountries = ({loading, list, filter, handleShow}) => {
+  if(loading)return<div>Loading...</div> 
   else {
-    //filter list
     const regexp = new RegExp(filter, 'i')
-    const filteredCountries = countries.filter(country => country.name.match(regexp))
-    //check length and display different results
+    const filteredCountries = list.filter(country => country.name.match(regexp))
     if (filteredCountries.length <= 10 && filteredCountries.length > 1){
       return(
         <ul>
-          {filteredCountries.map(country => <Country key={country.alpha2Code} country={country}/>)}
+          {filteredCountries.map(country => <Country key={country.name} country={country} handleShow={handleShow}/>)}
         </ul>
-      ) 
-    } else if (filteredCountries.length === 1){
-      return (
-        <UnpackCountry filteredCountry={filteredCountries[0]}/>
+      )
+    } else if(filteredCountries.length === 1){
+      return(
+        <UnpackedCountry filteredCountry={filteredCountries[0]}/>
       )
     }
-    //default case
-    return <p>Too many options, please make a specific search</p>
+    //default return with too many
+    return(
+      <div>
+        too many options, try searching
+      </div>
+    )
   }
 }
-export default DisplayCountires
+
+export default DisplayCountries
