@@ -1,6 +1,6 @@
 import Country from './Country'
 import UnpackedCountry from './UnpackedCountry'
-const DisplayCountries = ({loading, list, filter, handleShow}) => {
+const DisplayCountries = ({loading, list, filter, handleShow, handleLocation, weather}) => {
   if(loading)return<div>Loading...</div> 
   else {
     const regexp = new RegExp(filter, 'i')
@@ -13,7 +13,10 @@ const DisplayCountries = ({loading, list, filter, handleShow}) => {
       )
     } else if(filteredCountries.length === 1){
       return(
-        <UnpackedCountry filteredCountry={filteredCountries[0]}/>
+        <UnpackedCountry filteredCountry={filteredCountries[0]}
+        handleLocation={handleLocation}
+        weather={weather}
+        />
       )
     }
     //default return with too many

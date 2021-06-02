@@ -22,6 +22,19 @@ const App = () => {
     setFilter(name)
   }
 
+  //!weather stuff
+  const [location, setLocation] = useState({})
+  const [weather, setWeather] = useState({})
+  const api_key = process.env.REACT_APP_WEATHER
+  useEffect(()=>{
+    axios.get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${location}`)
+      .then(response => setWeather(response.data))
+  },[location, api_key])
+
+  const handleLocation = (capital) =>{
+    setLocation(capital)
+  }
+
   return (
     <div>
       <form>
@@ -30,7 +43,11 @@ const App = () => {
         onChange = {handleFilter}
         />
       </form>
-      <DisplayCountries loading={loading} list={list} filter={filter} handleShow={handleShow}/>
+      <DisplayCountries 
+      loading={loading} list={list} filter={filter} handleShow={handleShow}
+      handleLocation={handleLocation}
+      weather={weather}
+      />
     </div>
   )
 }
