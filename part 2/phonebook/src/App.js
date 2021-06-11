@@ -1,16 +1,18 @@
 import React, { useState, useEffect} from 'react'
 import FilterSearch from './components/FilterSearch'
-import axios from 'axios'
+import phonebookService from './services/phonebook'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
 
 useEffect(()=>{
-  axios.get('http://localhost:3001/phonebook')
-  .then(response=> {
-    setPersons(response.data)
-  })
+  phonebookService
+  .getAll()
+  .then(initalBook =>{
+    setPersons(initalBook)
+    })
 }, [])
+
   const handleNewPerson = (event) =>{
     event.preventDefault()
     if (persons.some(entry => entry.name === newName)){

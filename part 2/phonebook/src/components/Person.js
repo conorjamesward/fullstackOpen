@@ -1,5 +1,5 @@
 import React from 'react'
-const Person = ({id, person}) => {
+const Person = ({person}) => {
   /*
   wierd error where it says the id isn't unique, but it is...
   I thought the component might be re-rendering created duplicates,
@@ -8,9 +8,8 @@ const Person = ({id, person}) => {
   have redundant keys, I haven't been able to figure out what is
   wrong
   */
-  console.log('keys:', id)
   return(
-    <li key={id}>
+    <li>
       {person.name} {person.number}
     </li>
   )
