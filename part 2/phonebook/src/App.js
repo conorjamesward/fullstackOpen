@@ -29,6 +29,10 @@ useEffect(()=>{
     }
   }
 
+  const handleDeletePerson = (event) => {
+    console.log(event.target.id)
+  }
+
   const [ newName, setNewName ] = useState('')
   const handleNewName = (event) =>{
     setNewName(event.target.value)
@@ -75,7 +79,7 @@ useEffect(()=>{
         </div>
       </form>
       <h2>Numbers</h2>
-      <FilterSearch persons={persons} search={newSearch}/>
+      <FilterSearch persons={persons} search={newSearch} deleteHandler={handleDeletePerson}/>
     </div>
   )
 }

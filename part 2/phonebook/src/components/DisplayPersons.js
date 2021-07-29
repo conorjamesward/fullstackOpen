@@ -1,10 +1,12 @@
 import React from 'react'
 import Person from'./Person'
 
-const DisplayPersons = ({persons}) => {
+const DisplayPersons = ({persons, deleteHandler}) => {
   return(
     <ul>
-      {persons.map(person => <Person key={person.name} person={person}/>)}
+      {persons.map(person => 
+      <Person key={person.name} person={person} deleteHandler={deleteHandler}
+      />)}
     </ul>
   )
 }
