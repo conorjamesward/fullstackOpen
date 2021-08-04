@@ -5,7 +5,7 @@ const getAll = () =>{
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
 }
-//!below note currently usesd
+
 const create = newObject =>{
   const request = axios.post(baseUrl, newObject)
   return request.then(response => response.data)
@@ -16,4 +16,8 @@ const update = (id, newObject) =>{
   return request.then(response => response.data)
 }
 
-export default {getAll, create, update} 
+const deleter = (id) => {
+  axios.delete(`${baseUrl}/${id}`)
+}
+
+export default {getAll, create, update, deleter} 
