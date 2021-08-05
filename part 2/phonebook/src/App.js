@@ -1,11 +1,20 @@
-//TODO: update display when and update or deletion occurs, issue is with deep vs shallow reference of 'persons'
-
 import React, { useState, useEffect} from 'react'
 import FilterSearch from './components/FilterSearch'
+import Notification from './components/Notification'
 import phonebookService from './services/phonebook'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
+  const [ errorMessage, setErrorMessage ] = useState(null)
+  const [ badMessage, setBadMessage ] = useState()
+  //functon makes all calls to display an error message a one-liner below for readability
+  function displayMessage (message, bad){
+    setErrorMessage(message)
+    setBadMessage(bad)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  } 
 
   const [ newName, setNewName ] = useState('')
   const handleNewName = (event) =>{
@@ -24,10 +33,10 @@ const App = () => {
 
   useEffect(()=>{
     phonebookService
-    .getAll()
-    .then(initalBook =>{
-      setPersons(initalBook)
-    })
+      .getAll()
+      .then(initalBook =>{
+        setPersons(initalBook)
+      })
   }, [])
 
   const handleNewPerson = (event) =>{
@@ -42,12 +51,17 @@ const App = () => {
         window.confirm(`Do you want to change the number for ${newName} from ${changePerson[0].number} to ${newNumber}?`))
       {
         phonebookService
-          .update(changePerson[0].id, {name: newName, number:newNumber})
+          .update(changePerson[0].id, {name: newName, number:newNumber}, displayMessage)
           .then(response => {
             //fixed deep vs shallow reference issue... ineligantly
             const updatedPersons = JSON.parse(JSON.stringify(persons))
             updatedPersons[response.id - 1] = response
             setPersons(updatedPersons)
+            displayMessage(`${newName}'s number has now been updated to ${newNumber}`, false)
+          })
+          //catch error if person is deleted and updated in another window around the same time
+          .catch(() => {
+            displayMessage(`information on ${newName} has already been removed from the server`, true)
           })
       } 
       else {
@@ -59,6 +73,7 @@ const App = () => {
           .create(personObject)
           .then(response => {
             setPersons(persons.concat(response))
+            displayMessage(`${response.name} has been added to the phonebook`, false)
           })
       }
     }
@@ -72,6 +87,7 @@ const App = () => {
         .deleter(event.target.id)
         .then(afterDeletion => {
           setPersons(afterDeletion)
+          displayMessage(`${event.target.name} has been removed from the phonebook`, false)
         })
     }
   }
@@ -79,6 +95,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+      message={errorMessage}
+      bad={badMessage}/>
       <div>
         filter shown with
         <input
